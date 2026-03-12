@@ -38,7 +38,7 @@ const data = {
   navProjectItems: [
     {
       name: "Board",
-      url: "#",
+      url: "/projects/lil-project/board",
       icon: SquareKanban,
     },
     {
