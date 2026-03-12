@@ -25,7 +25,7 @@ export default function RootLayout({
       <body className={`${inter.variable} antialiased`}>
         <SidebarProvider>
           <AppSidebar />
-          <main>
+          <main className="flex flex-col flex-1 min-h-0">
             <SidebarTrigger />
             {children}
           </main>

@@ -1,5 +1,7 @@
 "use client";
 
+import { useDraggable } from "@dnd-kit/core";
+import { CSS } from "@dnd-kit/utilities";
 import { Minus, SignalHigh, SignalLow, SignalMedium } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -19,8 +21,19 @@ interface KanbanCardProps {
 }
 
 export function KanbanCard({ task }: KanbanCardProps) {
+  const { setNodeRef, attributes, listeners, transform, isDragging } =
+    useDraggable({ id: task.id });
+
   return (
-    <Card className="cursor-pointer border border-border ring-0 transition-shadow hover:shadow-md">
+    <Card
+      ref={setNodeRef}
+      {...attributes}
+      {...listeners}
+      style={{ transform: CSS.Transform.toString(transform) }}
+      className={`border border-border ring-0 transition-shadow hover:shadow-md ${
+        isDragging ? "cursor-grabbing opacity-30" : "cursor-grab"
+      }`}
+    >
       <CardContent className="flex h-24 flex-col justify-between px-3 py-0">
         <div className="flex items-center gap-1.5">
           {priorityIcons[task.priority]}
