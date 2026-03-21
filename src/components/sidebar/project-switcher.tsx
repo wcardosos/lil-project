@@ -22,7 +22,9 @@ export function ProjectSwitcher({
   projects,
 }: {
   projects: {
+    id: string
     name: string
+    slug: string
   }[]
 }) {
   const { isMobile } = useSidebar()
@@ -56,7 +58,7 @@ export function ProjectSwitcher({
             <DropdownMenuLabel className="text-xs text-muted-foreground">
               Projects
             </DropdownMenuLabel>
-            {projects.map((project, index) => (
+            {projects.map((project) => (
               <DropdownMenuItem
                 key={project.name}
                 onClick={() => setActiveProject(project)}
