@@ -1,37 +1,50 @@
-import { Entity } from "#domain/entities/entity"
-import { DomainError } from "#domain/errors/domain-error"
+import { Entity } from "#domain/entities/entity";
+import { DomainError } from "#domain/errors/domain-error";
 
 interface ProjectProps {
-  name: string
-  slug: string
+  name: string;
+  slug: string;
 }
 
 export class Project extends Entity<ProjectProps> {
   private constructor(props: ProjectProps, id?: string) {
-    super(props, id)
+    super(props, id);
   }
 
   static create(props: { name: string; slug: string }): Project {
-    if (!props.name || props.name.trim().length < 2) {
-      throw new DomainError("Nome do projeto deve ter pelo menos 2 caracteres")
+    const trimmedName = props.name.trim();
+
+    if (trimmedName.length < 3) {
+      throw new DomainError("O nome deve ter pelo menos 3 caracteres.");
     }
-    if (!/^[a-z0-9-]+$/.test(props.slug)) {
-      throw new DomainError(
-        "Slug do projeto deve conter apenas letras minúsculas, números e hífens",
-      )
+    if (trimmedName.length > 50) {
+      throw new DomainError("O nome pode ter no máximo 50 caracteres.");
     }
-    return new Project({ name: props.name.trim(), slug: props.slug })
+    if (/^\d+$/.test(trimmedName)) {
+      throw new DomainError("O nome não pode ser composto apenas por números.");
+    }
+
+    const normalizedSlug = props.slug
+      .normalize("NFD")
+      .replace(/\p{Mn}/gu, "")
+      .toUpperCase();
+
+    if (!/^[A-Z]{3}$/.test(normalizedSlug)) {
+      throw new DomainError("A abreviação deve ter exatamente 3 letras.");
+    }
+
+    return new Project({ name: trimmedName, slug: normalizedSlug });
   }
 
   static reconstitute(props: ProjectProps, id: string): Project {
-    return new Project(props, id)
+    return new Project(props, id);
   }
 
   get name(): string {
-    return this.props.name
+    return this.props.name;
   }
 
   get slug(): string {
-    return this.props.slug
+    return this.props.slug;
   }
 }

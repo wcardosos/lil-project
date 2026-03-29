@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { ChevronsUpDown, Plus } from "lucide-react"
+import Link from "next/link"
 
 import {
   DropdownMenu,
@@ -68,11 +69,13 @@ export function ProjectSwitcher({
               </DropdownMenuItem>
             ))}
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="gap-2 p-2">
-              <div className="flex size-6 items-center justify-center rounded-md border bg-transparent">
-                <Plus className="size-4" />
-              </div>
-              <div className="font-medium text-muted-foreground">New project</div>
+            <DropdownMenuItem asChild className="gap-2 p-2">
+              <Link href="/new-project">
+                <div className="flex size-6 items-center justify-center rounded-md border bg-transparent">
+                  <Plus className="size-4" />
+                </div>
+                <div className="font-medium text-muted-foreground">New project</div>
+              </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
